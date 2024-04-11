@@ -7,8 +7,9 @@
 
 import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import instructionsText from './components/Instructions';
 
 // Prevent the splash screen from hiding immediately
 SplashScreen.preventAutoHideAsync();
@@ -28,9 +29,15 @@ export default function App() {
     prepare();
   }, []);
 
+  //Instructions
+  const showInstructions = () => {
+    Alert.alert("About 'Masarap Ba?'", instructionsText, [{ text: "OK" }]);
+  };
+
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
+      <Button title="How to Use" onPress={showInstructions} />
       <StatusBar style="auto" />
     </View>
   );
