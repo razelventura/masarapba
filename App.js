@@ -36,8 +36,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text style={styles.headerText}>MASARAP BA?</Text>
       <Button title="How to Use" onPress={showInstructions} />
+      <Button title="Add an Entry" onPress={() => {}} />
+      <Button title="View Entries" onPress={() => {}} />
       <StatusBar style="auto" />
     </View>
   );
@@ -49,5 +51,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  headerText: {
+    color: 'black',
+    fontSize: 25,
+    fontWeight: 'bold'
   },
 });
