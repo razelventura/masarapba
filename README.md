@@ -17,7 +17,7 @@ This app is for you. You can log the food that you ordered and decide if it's ma
 
 ## INSTALLATIONS
 
-Nothing?
+``` npx expo install expo-splash-screen ```
  
 
 ## NOTE TO STEPHEN
