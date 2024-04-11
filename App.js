@@ -9,7 +9,16 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import instructionsText from './components/Instructions';
+/* import instructionsText from './components/Instructions'; */
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CreateScreen from './components/Create';
+import ViewSummaryScreen from './components/Summary';
+import ViewProfileScreen from './components/Profile';
+import InstructionsScreen from './components/Instructions';
+
+const Stack = createNativeStackNavigator();
+
 
 // Prevent the splash screen from hiding immediately
 SplashScreen.preventAutoHideAsync();
@@ -29,20 +38,65 @@ export default function App() {
     prepare();
   }, []);
 
-  //Instructions
+/*   //Instructions
   const showInstructions = () => {
     Alert.alert("About 'Masarap Ba?'", instructionsText, [{ text: "OK" }]);
-  };
+  }; */
 
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          //headerTitle:'Nav Example',
+          headerStyle: { backgroundColor: 'gray'},
+          headerTintColor: 'white',
+          headerBackVisible: false,
+        }}>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="Create"
+          component={CreateScreen}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="ViewEntries"
+          component={ViewSummaryScreen}
+          options={{ headerShown: true }}
+          //options={{ presentation: 'modal' }}
+        />
+        <Stack.Screen
+          name="ViewProfile"
+          component={ViewProfileScreen}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Instructions"
+          component={InstructionsScreen}
+          //options={{ headerShown: true }}
+          options={{ presentation:'modal' }}
+        />
+
+        </Stack.Navigator>
+
+    </NavigationContainer>
+  );
+function HomeScreen ({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>MASARAP BA?</Text>
-      <Button title="How to Use" onPress={showInstructions} />
-      <Button title="Add an Entry" onPress={() => {}} />
-      <Button title="View Entries" onPress={() => {}} />
+      <Button title="How to Use" onPress={() => navigation.navigate('Instructions')} />
+      <Button title="Add an Entry" onPress={() => navigation.navigate('Create')} />
+      <Button title="View Entries" onPress={() => navigation.navigate('ViewEntries')} />
       <StatusBar style="auto" />
     </View>
   );
+}
+
 }
 
 const styles = StyleSheet.create({
