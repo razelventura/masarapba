@@ -23,6 +23,9 @@ const Stack = createNativeStackNavigator();
 // Prevent the splash screen from hiding immediately
 SplashScreen.preventAutoHideAsync();
 
+// Banner image
+const masarapBanner = require('./assets/masarapbanner.png'); 
+
 export default function App() {
 
   //Splash screen
@@ -88,7 +91,11 @@ export default function App() {
 function HomeScreen ({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>MASARAP BA?</Text>
+      <Image style= {{height:200}}
+        source={masarapBanner}
+        resizeMode="contain"
+      />
+      {/* <Text style={styles.headerText}>MASARAP BA?</Text> */}
       <Button title="How to Use" onPress={() => navigation.navigate('Instructions')} />
       <Button title="Add an Entry" onPress={() => navigation.navigate('Create')} />
       <Button title="View Entries" onPress={() => navigation.navigate('ViewEntries')} />
