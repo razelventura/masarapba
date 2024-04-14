@@ -16,6 +16,7 @@ import CreateScreen from './components/Create';
 import ViewSummaryScreen from './components/Summary';
 import ViewProfileScreen from './components/Profile';
 import InstructionsScreen from './components/Instructions';
+import * as SQLite from 'expo-sqlite';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,11 +27,29 @@ SplashScreen.preventAutoHideAsync();
 // Banner image
 const masarapBanner = require('./assets/masarapbanner.png'); 
 
+// Open the database; create it if it doesn't exist
+const db = SQLite.openDatabase('masarapba.db');
+
+// Initialize the database
+function initDB() {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY AUTOINCREMENT, pictureUri TEXT, restaurantName TEXT, visitDate DATE, isDelicious INTEGER, remarks TEXT);"
+    );
+  }, (error) => {
+    console.error("Error creating tables", error);
+  });
+}
+
 export default function App() {
 
   //Splash screen
   useEffect(() => {
     async function prepare() {
+
+      // Initialize the database when the app starts
+      initDB();
+
       // Wait 4 seconds
       await new Promise(resolve => setTimeout(resolve, 4000));
 

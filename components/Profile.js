@@ -5,16 +5,43 @@
 //brief: This is Read/View of the selected entry. It will display neatly the information entered by the user. 
 
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { Button, Image, StyleSheet, Text, View } from 'react-native';
 
-function ViewProfileScreen({ navigation }) {
+function ViewProfileScreen({ route, navigation }) {
+
+  // Extract entry data from navigation parameters
+  const { entry } = route.params;
+  
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>View Profile</Text>
-      {/* TO DO: Code for viewing profile */}
+    <View style={styles.container}>
+      <Text style={styles.title}>Profile</Text>
+      {entry.pictureUri && <Image source={{ uri: entry.pictureUri }} style={styles.image} />}
+      <Text>Restaurant Name: {entry.restaurantName}</Text>
+      <Text>Date of Visit: {entry.visitDate}</Text>
+      <Text>Masarap Ba: {entry.isDelicious ? 'Yes' : 'No'}</Text>
+      <Text>Remarks: {entry.remarks}</Text>
       <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  image: {
+    width: 300,
+    height: 200,
+    resizeMode: 'cover',
+    marginBottom: 20,
+  },
+});
 
 export default ViewProfileScreen;

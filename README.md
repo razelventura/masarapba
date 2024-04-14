@@ -20,6 +20,7 @@ This app is for you. You can log the food that you ordered and decide if it's ma
 ``` npx expo install expo-splash-screen ```
 ``` npm install react-native-safe-area-context@4.8.2 ```
 ``` npm install react-native-screens@~3.29.0 ```
+``` npx expo install expo-sqlite ```
 
  
 
