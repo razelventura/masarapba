@@ -13,7 +13,7 @@ function ViewSummaryScreen({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>View Existing Entries</Text>
       {/* TO DO: Add code for viewing entries */}
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+      {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
     </View>
   );
 }

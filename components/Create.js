@@ -12,7 +12,7 @@ function CreateScreen({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Add an Entry</Text>
       {/* TO DO: Add code for adding entry */}
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+      {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
     </View>
   );
 }

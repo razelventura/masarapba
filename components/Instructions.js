@@ -27,7 +27,7 @@ function InstructionsScreen({ navigation }) {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Instructions</Text>
       <Text style={styles.content}>{instructionsText}</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+      {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
     </ScrollView>
   );
 }

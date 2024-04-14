@@ -54,7 +54,8 @@ export default function App() {
           //headerTitle:'Nav Example',
           headerStyle: { backgroundColor: 'gray'},
           headerTintColor: 'white',
-          headerBackVisible: false,
+          headerShown: true,
+          headerBackVisible: true,
         }}>
         <Stack.Screen
           name="Home"
@@ -64,24 +65,20 @@ export default function App() {
         <Stack.Screen
           name="Create"
           component={CreateScreen}
-          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="ViewEntries"
           component={ViewSummaryScreen}
-          options={{ headerShown: true }}
           //options={{ presentation: 'modal' }}
         />
         <Stack.Screen
           name="ViewProfile"
           component={ViewProfileScreen}
-          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Instructions"
           component={InstructionsScreen}
-          //options={{ headerShown: true }}
-          options={{ presentation:'modal' }}
+          //options={{ presentation:'modal' }}
         />
 
         </Stack.Navigator>
