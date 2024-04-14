@@ -5,9 +5,10 @@
 //brief: On this page, the user should be able to create/add an entry.
 
 import React, {useState} from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, Platform } from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity, Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
+import * as ImagePicker from 'expo-image-picker'
 
 const db = SQLite.openDatabase('masarapba.db');
 
@@ -23,14 +24,49 @@ function CreateScreen({ navigation }) {
   // ISO string date format for visitDate
     const [visitDate, setVisitDate] = useState(date.toISOString().split('T')[0]);
 
+  //Request for permissions for media and camera
+  const requestMediaLibraryPermissions = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need gallery permissions to make this work!');
+    }
+  };
+
+  const requestCameraPermissions = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need camera permissions to make this work!');
+    }
+  };
+
   // Placeholder function for taking a picture
-    const takePhoto = () => {
-      // Use ImagePicker to take photo and setPictureUri
+    const takePhoto = async () => {
+      await requestCameraPermissions();
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.cancelled) {
+        setPictureUri(result.uri);
+      }
     };
+
   
-  // Placeholder function for choosing a picture
-    const choosePhoto = () => {
-      // Use ImagePicker to pick a photo and setPictureUri
+    const choosePhoto = async () => {
+      await requestMediaLibraryPermissions();
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      if (!result.cancelled) {
+        setPictureUri(result.uri);
+      }
     };
 
   // Update the date in the state when changed
@@ -52,7 +88,7 @@ function CreateScreen({ navigation }) {
   },
   null, 
   () => {
-    //to do: add success message
+    Alert.alert("Success", "Entry added successfully");
     navigation.goBack();
  }
   );

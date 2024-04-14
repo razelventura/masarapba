@@ -9,7 +9,6 @@ import React from 'react';
 import { View, Text, Button, ScrollView, StyleSheet } from 'react-native';
 
 const instructionsText = `
-Welcome to Masarap Ba! 
 
 "Masarap ba?" is Filipino for "Is it delicious?"
 
@@ -25,7 +24,7 @@ May your food always be MASARAP! Enjoy!
 function InstructionsScreen({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Instructions</Text>
+      <Text style={styles.title}>Welcome to Masarap Ba!</Text>
       <Text style={styles.content}>{instructionsText}</Text>
       {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
     </ScrollView>

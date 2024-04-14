@@ -22,6 +22,7 @@ This app is for you. You can log the food that you ordered and decide if it's ma
 ``` npm install react-native-screens@~3.29.0 ```
 ``` npx expo install expo-sqlite ```
 ``` npx expo install @react-native-community/datetimepicker ```
+``` npx expo install expo-image-picker ```
 
  
 
