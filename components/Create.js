@@ -14,10 +14,14 @@ const db = SQLite.openDatabase('masarapba.db');
 function CreateScreen({ navigation }) {
 
   const [restaurantName, setRestaurantName] = useState('');
-  const [visitDate, setVisitDate] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [isDelicious, setIsDelicious] = useState(true); // Default is yes
   const [remarks, setRemarks] = useState('');
   const [pictureUri, setPictureUri] = useState('');
+
+  // ISO string date format for visitDate
+    const [visitDate, setVisitDate] = useState(date.toISOString().split('T')[0]);
 
   // Placeholder function for taking a picture
     const takePhoto = () => {
@@ -28,6 +32,13 @@ function CreateScreen({ navigation }) {
     const choosePhoto = () => {
       // Use ImagePicker to pick a photo and setPictureUri
     };
+
+  // Update the date in the state when changed
+  const onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+    setVisitDate(currentDate.toISOString().split('T')[0]);
+  };
 
   // When the user confirms the addition of a new entry
   const saveEntryToDB = (pictureUri, restaurantName, visitDate, isDelicious) => {
@@ -55,12 +66,14 @@ return (
       value={restaurantName}
       placeholder="Name of the restaurant"
     />
-    <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
-      onChangeText={setVisitDate}
-      value={visitDate}
-      placeholder="Date of visit (YYYY-MM-DD)"
-    />
+    <Text> Date of Visit</Text>
+      <DateTimePicker
+          value={date}
+          mode="date"
+          display="default"
+          onChange={onChangeDate}
+          style={{ width: '100%', alignItems: 'center' }}
+        />
     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
       <Text>Masarap ba?</Text>
       <TouchableOpacity onPress={() => setIsDelicious(true)} style={{ marginHorizontal: 10 }}>
