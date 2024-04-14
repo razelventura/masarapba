@@ -4,10 +4,30 @@
 //Create.js
 //brief: On this page, the user should be able to create/add an entry.
 
-import React from 'react';
-import { View, Text, Button } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, TextInput, TouchableOpacity, Button, Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('masarapba.db');
 
 function CreateScreen({ navigation }) {
+
+  const [restaurantName, setRestaurantName] = useState('');
+  const [visitDate, setVisitDate] = useState('');
+  const [isDelicious, setIsDelicious] = useState(true); // Default is yes
+  const [remarks, setRemarks] = useState('');
+  const [pictureUri, setPictureUri] = useState('');
+
+  // Placeholder function for taking a picture
+    const takePhoto = () => {
+      // Use ImagePicker to take photo and setPictureUri
+    };
+  
+  // Placeholder function for choosing a picture
+    const choosePhoto = () => {
+      // Use ImagePicker to pick a photo and setPictureUri
+    };
 
   // When the user confirms the addition of a new entry
   const saveEntryToDB = (pictureUri, restaurantName, visitDate, isDelicious) => {
@@ -18,16 +38,50 @@ function CreateScreen({ navigation }) {
       (_, { rows }) => { console.log("Success", rows); },
       (_, error) => { console.log("Error", error); }
     );
-  });
+  },
+  null, 
+  () => {
+    //to do: add success message
+    navigation.goBack();
+ }
+  );
 };
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Add an Entry</Text>
-      {/* TO DO: Add code for adding entry */}
-      {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
+return (
+  <View style={{ flex: 1, padding: 20 }}>
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
+      onChangeText={setRestaurantName}
+      value={restaurantName}
+      placeholder="Name of the restaurant"
+    />
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
+      onChangeText={setVisitDate}
+      value={visitDate}
+      placeholder="Date of visit (YYYY-MM-DD)"
+    />
+    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+      <Text>Masarap ba?</Text>
+      <TouchableOpacity onPress={() => setIsDelicious(true)} style={{ marginHorizontal: 10 }}>
+        <Text style={{ color: isDelicious ? 'blue' : 'black' }}>Yes</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setIsDelicious(false)}>
+        <Text style={{ color: !isDelicious ? 'blue' : 'black' }}>No</Text>
+      </TouchableOpacity>
     </View>
-  );
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
+      onChangeText={setRemarks}
+      value={remarks}
+      placeholder="Remarks"
+      multiline
+    />
+    <Button title="Take a Photo" onPress={takePhoto} />
+    <Button title="Choose from Gallery" onPress={choosePhoto} />
+    <Button title="Save Entry" onPress={saveEntryToDB} />
+  </View>
+);
 }
 
 export default CreateScreen;
