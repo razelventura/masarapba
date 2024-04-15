@@ -5,7 +5,7 @@
 //brief: On this page, the user should be able to create/add an entry.
 
 import React, {useState, useEffect } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Button, Platform } from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity, Vibration, Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
 import * as ImagePicker from 'expo-image-picker'
@@ -115,6 +115,9 @@ function CreateScreen({ navigation }) {
   null, 
   () => {
     Alert.alert("Success", "Entry added successfully");
+    
+    // Vibrate to indicate a match
+    Vibration.vibrate(200) // 200ms
   }
   );
 };
