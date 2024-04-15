@@ -121,8 +121,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 300,
-    height: 200,
+    width: 400,
+    height: 300,
     resizeMode: 'cover',
     marginBottom: 20,
   },
