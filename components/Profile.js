@@ -99,6 +99,7 @@ function ViewProfileScreen({ route, navigation }) {
       <Text style={styles.text}>Masarap Ba: {entry.isDelicious ? 'Yes' : 'No'}</Text>
       <Text style={styles.text}>Remarks: {entry.remarks}</Text>
       <Button title="Delete" onPress={() => areYouSure(entry.id)}/>
+      <Button title="Back to All Entries" onPress={() => navigation.navigate('ViewEntries')}/>
     </View>
   );
 }

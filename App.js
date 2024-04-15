@@ -89,7 +89,10 @@ export default function App() {
         <Stack.Screen
           name="ViewProfile"
           component={ViewProfileScreen}
-          options={{title: 'View Entry'}}
+          options={({ navigation }) => ({
+            title: 'View Entry',
+            headerBackVisible: false,
+          })}
         />
         <Stack.Screen
           name="Instructions"

@@ -5,10 +5,11 @@
 //brief: On this page, the user should be able to create/add an entry.
 
 import React, {useState, useEffect } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Vibration, Button, Platform } from 'react-native';
+import { Alert, View, Image, Text, TextInput, TouchableOpacity, Vibration, Button, Platform, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
-import * as ImagePicker from 'expo-image-picker'
+import * as ImagePicker from 'expo-image-picker';
+import { ScrollView } from 'react-native';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
 
@@ -39,13 +40,6 @@ function CreateScreen({ navigation }) {
       alert('Sorry, we need camera permissions to make this work!');
     }
   };
-
-  // Use useEffect to trigger database save after pictureUri state updates
-  useEffect(() => {
-    if (pictureUri) {
-      saveEntryToDB();
-    }
-  }, [pictureUri]); // This will trigger saveEntryToDB when pictureUri changes
 
   // Function to use camera to take photo
     const takePhoto = async () => {
@@ -126,7 +120,7 @@ function CreateScreen({ navigation }) {
 };
 
 return (
-  <View style={{ flex: 1, padding: 20 }}>
+  <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
     <TextInput
       style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20, padding: 10 }}
       onChangeText={setRestaurantName}
@@ -164,11 +158,25 @@ return (
       placeholder="Remarks"
       multiline
     />
+  {pictureUri ? (
+      <Image source={{ uri: pictureUri }} style={styles.imagePreview} />
+    ) : null}
+
     <Button title="Take a Photo" onPress={takePhoto} />
     <Button title="Choose from Gallery" onPress={choosePhoto} />
     <Button title="Save Entry" onPress={saveEntryToDB} />
-  </View>
+  </ScrollView>
 );
 }
+
+const styles = StyleSheet.create({
+  imagePreview: {
+    width: '100%', 
+    height: 200, 
+    resizeMode: 'contain', 
+    alignSelf: 'center', 
+    marginBottom: 20, 
+  },
+});
 
 export default CreateScreen;
