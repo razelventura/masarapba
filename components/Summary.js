@@ -9,11 +9,20 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
+import { useIsFocused } from '@react-navigation/native';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
 
 function ViewSummaryScreen({ navigation }) {
   const [entries, setEntries] = useState([]);
+  const isFocused = useIsFocused(); 
+
+  // Fetch entries when the screen is focused
+  useEffect(() => {
+    if (isFocused) {
+      fetchEntries(); 
+    }
+  }, [isFocused]); 
 
   //Logging for debugging
   useEffect(()=>{
@@ -30,8 +39,7 @@ function ViewSummaryScreen({ navigation }) {
     logEntries();
   },[])
 
-  useEffect(() => {
-    const fetchEntries = async () => {
+    const fetchEntries = () => {
       db.transaction(tx => {
         tx.executeSql(
           "SELECT * FROM entries ORDER BY restaurantName ASC, visitDate DESC;",
@@ -45,9 +53,6 @@ function ViewSummaryScreen({ navigation }) {
         );
       });
     };
-
-    fetchEntries();
-  },[])
 
   const renderItem = ({ item }) => (
     <TouchableOpacity

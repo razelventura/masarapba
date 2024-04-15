@@ -5,7 +5,7 @@
 //brief: This is Read/View of the selected entry. It will display neatly the information entered by the user. 
 
 import React, {useState, useEffect} from 'react';
-import { ActivityIndicator, Button, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
@@ -40,6 +40,54 @@ function ViewProfileScreen({ route, navigation }) {
     );
   }
 
+  const deleteRecord = (id) => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "delete from entries where id = ?;",
+          [id],
+          (_, success) => {
+            console.log("Delete successful:", success);
+            Alert.alert(
+              "Delete Successful",
+              "The entry has been deleted.",
+              [
+                {
+                  text: "OK", onPress: () => navigation.navigate('ViewEntries')
+                }
+              ],
+              { cancelable: false }
+            );
+          },
+          (_, error) => {
+            console.error("Delete failed:", error);
+            Alert.alert(
+              "Delete Failed",
+              "There was a problem deleting the entry."
+            );
+          }
+        );
+      }
+    );
+  }
+  
+  const areYouSure = (id) => {
+    // Show confirmation dialog before deleting
+    Alert.alert(
+      "Delete Item", // Alert Title
+      "Are you sure you want to delete this entry?", // Alert Message
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Yes", onPress: () => deleteRecord(id) }
+      ],
+      { cancelable: false }
+    );
+  }  
+
   return (
     <View style={styles.container}>
       {entry.pictureUri && <Image source={{ uri: entry.pictureUri }} style={styles.image} />}
@@ -48,6 +96,7 @@ function ViewProfileScreen({ route, navigation }) {
       <Text style={styles.text}>Name of food/drink: {entry.foodName}</Text>
       <Text style={styles.text}>Masarap Ba: {entry.isDelicious ? 'Yes' : 'No'}</Text>
       <Text style={styles.text}>Remarks: {entry.remarks}</Text>
+      <Button title="Delete" onPress={() => areYouSure(entry.id)}/>
     </View>
   );
 }
