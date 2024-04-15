@@ -7,7 +7,7 @@
 
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -57,8 +57,16 @@ function ViewSummaryScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => navigation.navigate('ViewProfile', { entryId: item.id })}
-      style={{ padding: 20, borderBottomWidth: 1, borderColor: '#ccc' }}
+      style={styles.itemContainer}
     >
+      <Image
+        source={{
+          uri: item.isDelicious
+            ? 'https://citweb.lethbridgecollege.ab.ca/MobileApp/happy-face.png'
+            : 'https://citweb.lethbridgecollege.ab.ca/MobileApp/meh-face.png'
+        }}
+        style={styles.face}
+      />
       <Text>{item.restaurantName} - {item.visitDate} - {item.foodName} </Text>
       {/* Display more details if needed */}
     </TouchableOpacity>
@@ -66,7 +74,7 @@ function ViewSummaryScreen({ navigation }) {
 
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.container}>
       <FlatList
       data={entries}
       renderItem={renderItem}
@@ -75,5 +83,25 @@ function ViewSummaryScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    alignItems: 'center' 
+  },
+  face: {
+    width: 50,
+    height: 50,
+    marginRight: 20 
+  }
+});
 
 export default ViewSummaryScreen;
