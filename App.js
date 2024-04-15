@@ -28,13 +28,13 @@ SplashScreen.preventAutoHideAsync();
 const masarapBanner = require('./assets/masarapbanner.png'); 
 
 // Open the database; create it if it doesn't exist
-const db = SQLite.openDatabase('masarapba.db');
+const db = SQLite.openDatabase('masarapbaV2.db');
 
 // Initialize the database
 function initDB() {
   db.transaction((tx) => {
     tx.executeSql(
-      "CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY AUTOINCREMENT, pictureUri TEXT, restaurantName TEXT, visitDate DATE, isDelicious INTEGER, remarks TEXT);"
+      "CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY AUTOINCREMENT, pictureUri TEXT, restaurantName TEXT, visitDate DATE, foodName TEXT, isDelicious INTEGER, remarks TEXT);"
     );
   }, (error) => {
     console.error("Error creating tables", error);

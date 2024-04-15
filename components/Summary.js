@@ -7,16 +7,45 @@
 
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('masarapbaV2.db');
 
 function ViewSummaryScreen({ navigation }) {
   const [entries, setEntries] = useState([]);
-  //const navigation = useNavigation();
+
+  //Logging for debugging
+  useEffect(()=>{
+    const logEntries = () => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'SELECT * FROM entries;',
+          [],
+          (_, { rows }) => console.log(JSON.stringify(rows._array)),
+          (_, error) => console.error(error)
+        );
+      });
+    };  
+    logEntries();
+  },[])
 
   useEffect(() => {
     const fetchEntries = async () => {
-
+      db.transaction(tx => {
+        tx.executeSql(
+          "SELECT * FROM entries ORDER BY restaurantName ASC, visitDate DESC;",
+          [],
+          (_, { rows }) => {
+            setEntries(rows._array);
+          },
+          (_, error) => {
+            console.error("Failed to fetch entries: ", error);
+          }
+        );
+      });
     };
+
     fetchEntries();
   },[])
 
@@ -30,17 +59,6 @@ function ViewSummaryScreen({ navigation }) {
     </TouchableOpacity>
   );
 
-  // Retrieve the sorted entries
-  const getSortedEntries = () => {
-    db.transaction(tx => {
-    tx.executeSql(
-      "SELECT * FROM entries ORDER BY restaurantName ASC, visitDate DESC;",
-      [],
-      (_, { rows }) => { setEntries(rows._array); },
-      (_, error) => { console.log("Error", error); }
-        );
-      });
-    };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

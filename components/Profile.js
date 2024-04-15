@@ -18,6 +18,7 @@ function ViewProfileScreen({ route, navigation }) {
       {entry.pictureUri && <Image source={{ uri: entry.pictureUri }} style={styles.image} />}
       <Text>Restaurant Name: {entry.restaurantName}</Text>
       <Text>Date of Visit: {entry.visitDate}</Text>
+      <Text>Name of food/drink: {entry.foodName}</Text>
       <Text>Masarap Ba: {entry.isDelicious ? 'Yes' : 'No'}</Text>
       <Text>Remarks: {entry.remarks}</Text>
       <Button title="Go back" onPress={() => navigation.goBack()} />

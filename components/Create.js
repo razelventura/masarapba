@@ -10,13 +10,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
 import * as ImagePicker from 'expo-image-picker'
 
-const db = SQLite.openDatabase('masarapba.db');
+const db = SQLite.openDatabase('masarapbaV2.db');
 
 function CreateScreen({ navigation }) {
 
   const [restaurantName, setRestaurantName] = useState('');
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [foodName, setFoodName] = useState('');
   const [isDelicious, setIsDelicious] = useState(true); // Default is yes
   const [remarks, setRemarks] = useState('');
   const [pictureUri, setPictureUri] = useState('');
@@ -77,17 +78,18 @@ function CreateScreen({ navigation }) {
   };
 
   // When the user confirms the addition of a new entry
-  const saveEntryToDB = (pictureUri, restaurantName, visitDate, isDelicious) => {
+  const saveEntryToDB = () => {
   db.transaction(tx => {
     tx.executeSql(
-      "INSERT INTO entries (pictureUri, restaurantName, visitDate, isDelicious, remarks) values (?, ?, ?, ?, ?);",
-      [pictureUri, restaurantName, visitDate, isDelicious ? 1 : 0],
+      "INSERT INTO entries (pictureUri, restaurantName, visitDate, foodName, isDelicious, remarks) values (?, ?, ?, ?, ?, ?);",
+      [pictureUri, restaurantName, visitDate, foodName, isDelicious ? 1 : 0, remarks],
       (_, { rows }) => { console.log("Success", rows); },
       (_, error) => { console.log("Error", error); }
     );
   },
   null, 
   () => {
+    console.log("Success");
     Alert.alert("Success", "Entry added successfully");
     navigation.goBack();
  }
@@ -97,7 +99,7 @@ function CreateScreen({ navigation }) {
 return (
   <View style={{ flex: 1, padding: 20 }}>
     <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20, padding: 10 }}
       onChangeText={setRestaurantName}
       value={restaurantName}
       placeholder="Name of the restaurant"
@@ -108,9 +110,16 @@ return (
           mode="date"
           display="default"
           onChange={onChangeDate}
-          style={{ width: '100%', alignItems: 'center' }}
+          style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}
         />
-    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20, padding: 10 }}
+      onChangeText={setFoodName}
+      value={foodName}
+      placeholder="Name of food/drink item"
+    />
+     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
       <Text>Masarap ba?</Text>
       <TouchableOpacity onPress={() => setIsDelicious(true)} style={{ marginHorizontal: 10 }}>
         <Text style={{ color: isDelicious ? 'blue' : 'black' }}>Yes</Text>
@@ -120,7 +129,7 @@ return (
       </TouchableOpacity>
     </View>
     <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20 }}
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20, padding: 10 }}
       onChangeText={setRemarks}
       value={remarks}
       placeholder="Remarks"
