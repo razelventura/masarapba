@@ -92,6 +92,14 @@ function ViewProfileScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={{
+          uri: entry.isDelicious 
+            ? 'https://citweb.lethbridgecollege.ab.ca/MobileApp/happy-face.png'
+            : 'https://citweb.lethbridgecollege.ab.ca/MobileApp/meh-face.png'
+        }}
+        style={styles.face}
+      />
       {entry.pictureUri && <Image source={{ uri: entry.pictureUri }} style={styles.image} />}
       <Text style={styles.text}>Restaurant Name: {entry.restaurantName}</Text>
       <Text style={styles.text}>Date of Visit: {entry.visitDate}</Text>
@@ -132,6 +140,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  face: {
+    width: 100,
+    height: 100,
+    resizeMode: 'cover',
+    marginBottom: 20,
+  }
 });
 
 export default ViewProfileScreen;

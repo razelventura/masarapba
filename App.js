@@ -84,7 +84,11 @@ export default function App() {
         <Stack.Screen
           name="ViewEntries"
           component={ViewSummaryScreen}
-          options={{title: 'View All Entries'}}
+          options={({ navigation }) => ({
+            title: 'View All Entries',
+            headerBackVisible: false,
+            headerLeft: () => (<Button title="Back to Home" onPress={() => navigation.navigate('Home')}/>),
+          })}
         />
         <Stack.Screen
           name="ViewProfile"
@@ -92,6 +96,7 @@ export default function App() {
           options={({ navigation }) => ({
             title: 'View Entry',
             headerBackVisible: false,
+            headerLeft: () => (<Button title="Back to All Entries" onPress={() => navigation.navigate('ViewEntries')}/>),
           })}
         />
         <Stack.Screen
