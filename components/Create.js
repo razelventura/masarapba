@@ -4,7 +4,7 @@
 //Create.js
 //brief: On this page, the user should be able to create/add an entry.
 
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import { Alert, View, Text, TextInput, TouchableOpacity, Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
@@ -40,7 +40,14 @@ function CreateScreen({ navigation }) {
     }
   };
 
-  // Placeholder function for taking a picture
+  // Use useEffect to trigger database save after pictureUri state updates
+  useEffect(() => {
+    if (pictureUri) {
+      saveEntryToDB();
+    }
+  }, [pictureUri]); // This will trigger saveEntryToDB when pictureUri changes
+
+  // Function to use camera to take photo
     const takePhoto = async () => {
       await requestCameraPermissions();
       let result = await ImagePicker.launchCameraAsync({
@@ -51,11 +58,13 @@ function CreateScreen({ navigation }) {
       });
 
       if (!result.cancelled) {
+        console.log('Camera Result: ', result); // For debugging
         setPictureUri(result.uri);
+
       }
     };
 
-  
+  // Function to use media to pick photo
     const choosePhoto = async () => {
       await requestMediaLibraryPermissions();
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,7 +75,8 @@ function CreateScreen({ navigation }) {
       });
   
       if (!result.cancelled) {
-        setPictureUri(result.uri);
+        console.log('Image Picker Result: ', result); // For debugging
+        setPictureUri(result.uri)
       }
     };
 
@@ -83,16 +93,29 @@ function CreateScreen({ navigation }) {
     tx.executeSql(
       "INSERT INTO entries (pictureUri, restaurantName, visitDate, foodName, isDelicious, remarks) values (?, ?, ?, ?, ?, ?);",
       [pictureUri, restaurantName, visitDate, foodName, isDelicious ? 1 : 0, remarks],
-      (_, { rows }) => { console.log("Success", rows); },
+      (_, { rows }) => { console.log("Success", rows._array); },
       (_, error) => { console.log("Error", error); }
+    );
+
+    //Get the last inserted row ID
+    tx.executeSql(
+      "SELECT last_insert_rowid() as id;",
+      [],
+      (_, { rows }) => {
+        const lastId = rows._array[0].id; 
+        console.log("Last ID", lastId);
+        // Navigate to the profile of the latest entry
+        navigation.navigate('ViewProfile', { entryId: lastId });
+      },
+      (_, error) => {
+        console.error("Failed to retrieve last inserted id: ", error);
+      }
     );
   },
   null, 
   () => {
-    console.log("Success");
     Alert.alert("Success", "Entry added successfully");
-    navigation.goBack();
- }
+  }
   );
 };
 

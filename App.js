@@ -84,20 +84,22 @@ export default function App() {
         <Stack.Screen
           name="Create"
           component={CreateScreen}
+          options={{title: 'Add a New Entry'}}
         />
         <Stack.Screen
           name="ViewEntries"
           component={ViewSummaryScreen}
-          //options={{ presentation: 'modal' }}
+          options={{title: 'View All Entries'}}
         />
         <Stack.Screen
           name="ViewProfile"
           component={ViewProfileScreen}
+          options={{title: 'View Entry'}}
         />
         <Stack.Screen
           name="Instructions"
           component={InstructionsScreen}
-          //options={{ presentation:'modal' }}
+          options={{title: 'About Masarap Ba'}}
         />
 
         </Stack.Navigator>
@@ -112,7 +114,7 @@ function HomeScreen ({ navigation }) {
         resizeMode="contain"
       />
       {/* <Text style={styles.headerText}>MASARAP BA?</Text> */}
-      <Button title="How to Use" onPress={() => navigation.navigate('Instructions')} />
+      <Button title="About this App" onPress={() => navigation.navigate('Instructions')} />
       <Button title="Add an Entry" onPress={() => navigation.navigate('Create')} />
       <Button title="View Entries" onPress={() => navigation.navigate('ViewEntries')} />
       <StatusBar style="auto" />

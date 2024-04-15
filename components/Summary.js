@@ -51,10 +51,10 @@ function ViewSummaryScreen({ navigation }) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('ViewProfile', { entry: item })}
+      onPress={() => navigation.navigate('ViewProfile', { entryId: item.id })}
       style={{ padding: 20, borderBottomWidth: 1, borderColor: '#ccc' }}
     >
-      <Text>{item.restaurantName} - {item.visitDate}</Text>
+      <Text>{item.restaurantName} - {item.visitDate} - {item.foodName} </Text>
       {/* Display more details if needed */}
     </TouchableOpacity>
   );
@@ -62,7 +62,6 @@ function ViewSummaryScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>View Existing Entries</Text>
       <FlatList
       data={entries}
       renderItem={renderItem}
