@@ -58,9 +58,10 @@ function CreateScreen({ navigation }) {
       });
 
       if (!result.cancelled) {
+        const uri = result.assets[0].uri; // Accessing the uri from the assets array
         console.log('Camera Result: ', result); // For debugging
-        setPictureUri(result.uri);
-
+        console.log('Camera uri: ', uri); // For debugging
+        setPictureUri(uri);
       }
     };
 
@@ -75,8 +76,10 @@ function CreateScreen({ navigation }) {
       });
   
       if (!result.cancelled) {
+        const uri = result.assets[0].uri; // Accessing the uri from the assets array
         console.log('Image Picker Result: ', result); // For debugging
-        setPictureUri(result.uri)
+        console.log('Image picker uri: ', uri); // For debugging
+        setPictureUri(uri);
       }
     };
 
