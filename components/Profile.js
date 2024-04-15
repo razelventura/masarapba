@@ -5,7 +5,7 @@
 //brief: This is Read/View of the selected entry. It will display neatly the information entered by the user. 
 
 import React, {useState, useEffect} from 'react';
-import { ActivityIndicator, Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Button, Image, StyleSheet, Text, Vibration, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
@@ -48,6 +48,8 @@ function ViewProfileScreen({ route, navigation }) {
           [id],
           (_, success) => {
             console.log("Delete successful:", success);
+            // Vibrate to indicate success
+            Vibration.vibrate(200) // 200ms
             Alert.alert(
               "Delete Successful",
               "The entry has been deleted.",

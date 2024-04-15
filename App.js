@@ -60,11 +60,6 @@ export default function App() {
     prepare();
   }, []);
 
-/*   //Instructions
-  const showInstructions = () => {
-    Alert.alert("About 'Masarap Ba?'", instructionsText, [{ text: "OK" }]);
-  }; */
-
   return (
     <NavigationContainer>
       <Stack.Navigator

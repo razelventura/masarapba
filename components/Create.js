@@ -116,7 +116,7 @@ function CreateScreen({ navigation }) {
   () => {
     Alert.alert("Success", "Entry added successfully");
     
-    // Vibrate to indicate a match
+    // Vibrate to indicate success
     Vibration.vibrate(200) // 200ms
   }
   );
