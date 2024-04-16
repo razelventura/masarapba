@@ -24,6 +24,8 @@ This app is for you. You can log the food that you ordered and decide if it's ma
 ``` npx expo install @react-native-community/datetimepicker ```
 ``` npx expo install expo-image-picker ```
 ``` npm install @expo/vector-icons ```
+``` npm install react-native-vector-icons ```
+
 
 ## HOW WERE THE GOALS MET
 ### Your app must have a functional user interface using a variety of controls

@@ -8,6 +8,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, Vibration, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
 
@@ -103,8 +104,8 @@ function ViewProfileScreen({ route, navigation }) {
       <Image
         source={{
           uri: entry.isDelicious 
-            ? 'https://citweb.lethbridgecollege.ab.ca/MobileApp/happy-face.png'
-            : 'https://citweb.lethbridgecollege.ab.ca/MobileApp/meh-face.png'
+          ? 'https://citweb.lethbridgecollege.ab.ca/MobileApp/happy-face.png'
+          : 'https://citweb.lethbridgecollege.ab.ca/MobileApp/meh-face.png'
         }}
         style={styles.face}
       />
@@ -116,7 +117,28 @@ function ViewProfileScreen({ route, navigation }) {
       <Text style={styles.text}>Remarks: {entry.remarks ? entry.remarks : "None"}</Text>
 
       <View style={styles.buttonContainer}>
+
         <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create', { entry: entry, editMode: true })}>
+          <Icon name="edit" size={24} color="#FFFFFF" />
+          <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => areYouSure(entry.id)}>
+          <Icon name="delete" size={24} color="#FFFFFF" />
+          <Text style={styles.buttonText}>Delete</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create')}>
+          <Icon name="add" size={24} color="#FFFFFF" />
+          <Text style={styles.buttonText}>Add</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('ViewEntries')}>
+          <Icon name="list" size={24} color="#FFFFFF" />
+          <Text style={styles.buttonText}>List</Text>
+        </TouchableOpacity>
+
+{/*         <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create', { entry: entry, editMode: true })}>
           <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonStyle} onPress={() => areYouSure(entry.id)}>
@@ -124,7 +146,8 @@ function ViewProfileScreen({ route, navigation }) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('ViewEntries')}>
           <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
       </View>
 
     </View>
@@ -175,6 +198,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonStyle: {
+    width: 80,
+    height: 80,
     backgroundColor: '#d55314',  
     paddingVertical: 12,         
     paddingHorizontal: 20,       
@@ -195,8 +220,10 @@ const styles = StyleSheet.create({
 
 buttonText: {
     color: '#FFFFFF',            
-    fontSize: 16,                
-    //fontWeight: 'bold',          
+    fontSize: 13,   
+    paddingTop: 5,             
+    //fontWeight: 'bold',      
+    textAlign: 'center',    
 },
 });
 

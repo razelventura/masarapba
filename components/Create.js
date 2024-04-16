@@ -9,6 +9,8 @@ import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 const db = SQLite.openDatabase('masarapbaV2.db');
 
@@ -162,7 +164,8 @@ function CreateScreen({ route, navigation }) {
       <Text> Date Selected: {visitDate ? visitDate : "None"} </Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
       <TouchableOpacity style={styles.buttonStyle} onPress={() => setShowDatePicker(true)}>
-          <Text style={styles.buttonText}>{(visitDate ? "Change" : "Add") + " Date"}</Text>
+          <Icon name="calendar-month" size={24} color="#FFFFFF" />
+          <Text style={styles.buttonTextSmall}>{(visitDate ? "Change" : "Add") + " Date"}</Text>
           {showDatePicker && (
           <DateTimePicker
             value={date}
@@ -186,12 +189,25 @@ function CreateScreen({ route, navigation }) {
         }} />
       )}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+
+      <TouchableOpacity style={styles.buttonStyle} onPress={takePhoto}>
+        <Icon name="camera-alt" size={24} color="#FFFFFF" />
+        <Text style={styles.buttonTextSmall}>{(pictureUri ? "Retake Pic" : "Take a Pic")}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.buttonStyle} onPress={choosePhoto}>
+        <Icon name="photo-library" size={24} color="#FFFFFF" />
+        <Text style={styles.buttonTextSmall}>{(pictureUri ? "Choose New Pic" : "Choose Pic")}</Text>
+      </TouchableOpacity>
+
+{/* 
         <TouchableOpacity style={styles.buttonStyle} onPress={takePhoto}>
             <Text style={styles.buttonText}>{(pictureUri ? "Retake Pic" : "Take a Pic")}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonStyle} onPress={choosePhoto}>
             <Text style={styles.buttonText}>{(pictureUri ? "Choose New Pic" : "Choose Pic")}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
       </View>
 
       <TouchableOpacity style={[styles.buttonStyle, {marginBottom: 40, backgroundColor: '#d55314'}]} onPress={saveEntryToDB}>
@@ -246,6 +262,13 @@ buttonText: {
     color: 'black',            
     fontSize: 14,                
     //fontWeight: 'bold',          
+},
+buttonTextSmall: {
+  color: 'white',            
+  fontSize: 13,   
+  paddingTop: 5,             
+  //fontWeight: 'bold',      
+  textAlign: 'center',          
 },
 });
 
