@@ -24,7 +24,29 @@ This app is for you. You can log the food that you ordered and decide if it's ma
 ``` npx expo install @react-native-community/datetimepicker ```
 ``` npx expo install expo-image-picker ```
 
- 
+## HOW WERE THE GOALS MET
+### Your app must have a functional user interface using a variety of controls
+Some of the controls used are:  
+-Activity Indicator  
+-Alert  
+-Button  
+-Image  
+-Scrollable View  
+-Text  
+-Text Input  
+-TouchableOpacity  
+-useEffect  
+-useState  
+-Vibration (200ms for success, 100ms for warning or error)  
+
+### Your app must demonstrate local storage (file and/or database)
+SQLite was used to store data from the user.
+
+### Your app must demonstrate the use of an outside resource (i.e. from the internet)
+The meh and happy faces used to indicate if masarap ba were fetched from citweb. 
+
+### Your app must be deployable on an Android Platform
+Yes.
 
 ## NOTE TO STEPHEN
-This was only tested on iOS.   
+This was tested on both Android and iOS (but mostly iOS). 
