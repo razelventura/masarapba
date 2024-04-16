@@ -50,7 +50,10 @@ function CreateScreen({ route, navigation }) {
     });
 
     if (!result.cancelled) {
-      setPictureUri(result.uri);
+      const uri = result.assets[0].uri; // Accessing the uri from the assets array
+      console.log('Camera Result: ', result); // For debugging
+      console.log('Camera uri: ', uri); // For debugging
+      setPictureUri(uri);
     }
   };
 
@@ -65,20 +68,42 @@ function CreateScreen({ route, navigation }) {
     });
 
     if (!result.cancelled) {
-      setPictureUri(result.uri);
+      const uri = result.assets[0].uri; // Accessing the uri from the assets array
+      console.log('Image Picker Result: ', result); // For debugging
+      console.log('Image picker uri: ', uri); // For debugging
+      setPictureUri(uri);
     }
   };
 
   // Handler for date change
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
+    if (currentDate) {
+      // Adjusting date to local time zone before converting to string
+      const offset = currentDate.getTimezoneOffset() * 60000; 
+      const localDate = new Date(currentDate.getTime() - offset);
+      setVisitDate(localDate.toISOString().split('T')[0]);
+  }
     setDate(currentDate);
-    setVisitDate(currentDate.toISOString().split('T')[0]);
     setShowDatePicker(false); // Close date picker after selection
+  };
+
+// Validate entries
+  const validateEntry = () => {
+    if (!restaurantName || !visitDate || !foodName || isDelicious === null) {
+      Alert.alert("Error", "Please fill all required fields: Restaurant Name, Visit Date, Food Name, and Masarap Ba.");
+      return false;
+    }
+    return true;
   };
 
   // Save to DB
   const saveEntryToDB = () => {
+
+    if (!validateEntry()) {
+      return; // Stop the function if validation fails
+    }
+
     const query = editMode ?
       "UPDATE entries SET pictureUri = ?, restaurantName = ?, visitDate = ?, foodName = ?, isDelicious = ?, remarks = ? WHERE id = ?;" :
       "INSERT INTO entries (pictureUri, restaurantName, visitDate, foodName, isDelicious, remarks) VALUES (?, ?, ?, ?, ?, ?);";
@@ -100,15 +125,15 @@ function CreateScreen({ route, navigation }) {
   };
 
   return (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
+    <ScrollView style={styles.container}>
       <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20, padding: 10 }}
+        style={styles.textInput}
         onChangeText={setRestaurantName}
         value={restaurantName}
         placeholder="Name of the restaurant"
       />
       <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20, padding: 10 }}
+        style={styles.textInput}
         onChangeText={setFoodName}
         value={foodName}
         placeholder="Name of food/drink item"
@@ -116,37 +141,107 @@ function CreateScreen({ route, navigation }) {
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
         <Text>Masarap ba?</Text>
         <TouchableOpacity onPress={() => setIsDelicious(true)} style={{ marginHorizontal: 10 }}>
-          <Text style={{ color: isDelicious ? 'blue' : 'black' }}>Yes</Text>
+          <Text style={{ color: isDelicious ? '#d55314' : 'black' }}>Yes</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIsDelicious(false)}>
-          <Text style={{ color: !isDelicious ? 'blue' : 'black' }}>No</Text>
+          <Text style={{ color: !isDelicious ? '#d55314' : 'black' }}>No</Text>
         </TouchableOpacity>
       </View>
       <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 20, padding: 10 }}
+        style={styles.textInput}
         onChangeText={setRemarks}
         value={remarks}
         placeholder="Remarks"
         multiline
       />
+      <Text> Date Selected: {visitDate ? visitDate : "None"} </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+      <TouchableOpacity style={styles.buttonStyle} onPress={() => setShowDatePicker(true)}>
+          <Text style={styles.buttonText}>{(visitDate ? "Change" : "Add") + " Date"}</Text>
+          {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onChangeDate}
+            style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}
+          />
+        )}
+        </TouchableOpacity>
+        </View>
+      <Text> Picture Selected: { pictureUri ? "" : "None"} </Text>
       {pictureUri && (
-        <Image source={{ uri: pictureUri }} style={{ width: '100%', height: 200, resizeMode: 'contain', marginBottom: 20 }} />
+        <Image source=
+        {{ uri: pictureUri }} 
+        style={{     
+          width: '100%',
+          height: 200,
+          resizeMode: 'contain',
+          margin: 10, 
+        }} />
       )}
-      <Button title={(editMode ? "Change" : "Add") + " Date"} onPress={() => setShowDatePicker(true)} />
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display="default"
-          onChange={onChangeDate}
-          style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}
-        />
-      )}
-      <Button title="Take a Photo" onPress={takePhoto} />
-      <Button title="Choose from Gallery" onPress={choosePhoto} />
-      <Button title="Save Entry" onPress={saveEntryToDB} />
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={takePhoto}>
+            <Text style={styles.buttonText}>{(pictureUri ? "Retake Pic" : "Take a Pic")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonStyle} onPress={choosePhoto}>
+            <Text style={styles.buttonText}>{(pictureUri ? "Choose New Pic" : "Choose Pic")}</Text>
+          </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity style={[styles.buttonStyle, {margin: 10, backgroundColor: '#d55314'}]} onPress={saveEntryToDB}>
+          <Text style={[styles.buttonText,{color: '#ffffff', fontSize: 16}]}>Save Entry</Text>
+        </TouchableOpacity>
+
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor:'#d8a88b',
+    padding: 20, 
+  },
+  textInput: {
+    height: 40, 
+    borderColor: '#d55314',
+    borderWidth: 1, 
+    marginBottom: 20, 
+    padding: 10
+  },
+  buttonContainer: {
+    //flex: 1,
+    flexDirection: 'row', // Layout children in a row
+    flexWrap: 'wrap', // Allow items to wrap to the next line
+    alignItems: 'center', // Center items vertically in the container
+    //justifyContent: 'right', // Center items horizontally in the container
+    padding: 10,
+  },
+  buttonStyle: {
+    backgroundColor: '#df7859',  
+    paddingVertical: 12,         
+    paddingHorizontal: 20,       
+    borderRadius: 10,            
+    margin: 5,
+    shadowColor: '#000',         
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,         
+    shadowRadius: 3.84,          
+    elevation: 5,                
+    marginVertical: 10,          
+    alignItems: 'center',        
+    justifyContent: 'center',    
+},
+
+buttonText: {
+    color: 'black',            
+    fontSize: 14,                
+    //fontWeight: 'bold',          
+},
+});
 
 export default CreateScreen;

@@ -7,7 +7,7 @@
 
 import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, Button, Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 /* import instructionsText from './components/Instructions'; */
 import { NavigationContainer } from '@react-navigation/native';
@@ -66,10 +66,11 @@ export default function App() {
         initialRouteName="Home"
         screenOptions={{
           //headerTitle:'Nav Example',
-          headerStyle: { backgroundColor: 'gray'},
+          headerStyle: { backgroundColor: '#d55314'},
           headerTintColor: 'white',
           headerShown: true,
           headerBackVisible: true,
+          headerTitleAlign: 'center',
         }}>
         <Stack.Screen
           name="Home"
@@ -86,8 +87,6 @@ export default function App() {
           component={ViewSummaryScreen}
           options={({ navigation }) => ({
             title: 'View All Entries',
-            headerBackVisible: false,
-            headerLeft: () => (<Button title="Back to Home" onPress={() => navigation.navigate('Home')}/>),
           })}
         />
         <Stack.Screen
@@ -96,7 +95,6 @@ export default function App() {
           options={({ navigation }) => ({
             title: 'View Entry',
             headerBackVisible: false,
-            headerLeft: () => (<Button title="Back to All Entries" onPress={() => navigation.navigate('ViewEntries')}/>),
           })}
         />
         <Stack.Screen
@@ -116,10 +114,21 @@ function HomeScreen ({ navigation }) {
         source={masarapBanner}
         resizeMode="contain"
       />
-      {/* <Text style={styles.headerText}>MASARAP BA?</Text> */}
-      <Button title="About this App" onPress={() => navigation.navigate('Instructions')} />
-      <Button title="Add an Entry" onPress={() => navigation.navigate('Create')} />
-      <Button title="View Entries" onPress={() => navigation.navigate('ViewEntries')} />
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Instructions')}>
+          <Text style={styles.buttonText}>About this App</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create')} >
+          <Text style={styles.buttonText}>Add an Entry</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('ViewEntries')}>
+          <Text style={styles.buttonText}>View Entries</Text>
+        </TouchableOpacity>
+      </View>
+
+
+
       <StatusBar style="auto" />
     </View>
   );
@@ -130,7 +139,7 @@ function HomeScreen ({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#d8a88b', //#2f2922 #c2b6a8
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -139,4 +148,32 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold'
   },
+  buttonContainer: {
+    alignItems: 'center', 
+    padding: 10,
+  },
+  buttonStyle: {
+    backgroundColor: '#d55314',  
+    paddingVertical: 12,         
+    paddingHorizontal: 20,       
+    borderRadius: 10,            
+    margin: 5,
+    shadowColor: '#000',         
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,        
+    shadowRadius: 3.84,          
+    elevation: 5,                // Elevation for Android
+    marginVertical: 10,          
+    alignItems: 'center',        
+    justifyContent: 'center',    
+},
+
+buttonText: {
+    color: '#FFFFFF',            
+    fontSize: 16,                
+    //fontWeight: 'bold',          
+},
 });

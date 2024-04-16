@@ -5,7 +5,7 @@
 //brief: This is Read/View of the selected entry. It will display neatly the information entered by the user. 
 
 import React, {useState, useEffect, useCallback} from 'react';
-import { ActivityIndicator, Alert, Button, Image, StyleSheet, Text, Vibration, View } from 'react-native';
+import { ActivityIndicator, Alert, Button, Image, StyleSheet, Text, Vibration, View, TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -111,10 +111,20 @@ function ViewProfileScreen({ route, navigation }) {
       <Text style={styles.text}>Date of Visit: {entry.visitDate}</Text>
       <Text style={styles.text}>Name of food/drink: {entry.foodName}</Text>
       <Text style={styles.text}>Masarap Ba: {entry.isDelicious ? 'Yes' : 'No'}</Text>
-      <Text style={styles.text}>Remarks: {entry.remarks}</Text>
-      <Button title="Edit" onPress={() => navigation.navigate('Create', { entry: entry, editMode: true })} />
-      <Button title="Delete" onPress={() => areYouSure(entry.id)}/>
-      <Button title="Back to All Entries" onPress={() => navigation.navigate('ViewEntries')}/>
+      <Text style={styles.text}>Remarks: {entry.remarks ? entry.remarks : "None"}</Text>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create', { entry: entry, editMode: true })}>
+          <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => areYouSure(entry.id)}>
+          <Text style={styles.buttonText}>Delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('ViewEntries')}>
+          <Text style={styles.buttonText}>Back</Text>
+        </TouchableOpacity>
+      </View>
+
     </View>
   );
 }
@@ -126,7 +136,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    margin: 20,
+    //margin: 20,
+    backgroundColor: '#d8a88b',
   },
   text: {
     fontSize: 16,
@@ -137,8 +148,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 400,
-    height: 300,
+    width: 300,
+    height: 225,
     resizeMode: 'cover',
     marginBottom: 20,
   },
@@ -152,7 +163,39 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'cover',
     marginBottom: 20,
-  }
+  },
+  buttonContainer: {
+    //flex: 1,
+    flexDirection: 'row', // Layout children in a row
+    //flexWrap: 'wrap', // Allow items to wrap to the next line
+    alignItems: 'center', // Center items vertically in the container
+    //justifyContent: 'right', // Center items horizontally in the container
+    padding: 10,
+  },
+  buttonStyle: {
+    backgroundColor: '#d55314',  
+    paddingVertical: 12,         
+    paddingHorizontal: 20,       
+    borderRadius: 10,            
+    margin: 5,
+    shadowColor: '#000',         
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,         
+    shadowRadius: 3.84,          
+    elevation: 5,                
+    marginVertical: 10,          
+    alignItems: 'center',        
+    justifyContent: 'center',    
+},
+
+buttonText: {
+    color: '#FFFFFF',            
+    fontSize: 16,                
+    //fontWeight: 'bold',          
+},
 });
 
 export default ViewProfileScreen;

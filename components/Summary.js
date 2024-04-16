@@ -5,17 +5,28 @@
 //brief: This is the summary page. The user would be able to see all the entries in scrollable view. 
     //The entries will be sorted alphabetically according to restaurant name
 
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { BackHandler, View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
 
-function ViewSummaryScreen({ navigation }) {
+function ViewSummaryScreen() {
+  const navigation = useNavigation();
   const [entries, setEntries] = useState([]);
   const isFocused = useIsFocused(); 
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate('Home');
+      return true;  // Prevent default behavior
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, [navigation]);
 
   // Fetch entries when the screen is focused
   useEffect(() => {
@@ -89,6 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#d8a88b'
   },
   itemContainer: {
     flexDirection: 'row',
