@@ -104,18 +104,52 @@ function ViewProfileScreen({ route, navigation }) {
       <Image
         source={{
           uri: entry.isDelicious 
-          ? 'https://citweb.lethbridgecollege.ab.ca/MobileApp/happy-face.png'
-          : 'https://citweb.lethbridgecollege.ab.ca/MobileApp/meh-face.png'
+          ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Fluent_Emoji_Color_1f63b.svg/640px-Fluent_Emoji_Color_1f63b.svg.png'
+          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Fluent_Emoji_Color_1f63f.svg/640px-Fluent_Emoji_Color_1f63f.svg.png'
         }}
         style={styles.face}
       />
       {entry.pictureUri && <Image source={{ uri: entry.pictureUri }} style={styles.image} />}
-      <Text style={styles.text}>Restaurant Name: {entry.restaurantName}</Text>
-      <Text style={styles.text}>Date of Visit: {entry.visitDate}</Text>
-      <Text style={styles.text}>Name of food/drink: {entry.foodName}</Text>
-      <Text style={styles.text}>Masarap Ba: {entry.isDelicious ? 'Yes' : 'No'}</Text>
-      <Text style={styles.text}>Remarks: {entry.remarks ? entry.remarks : "None"}</Text>
 
+      <View style={{ flexDirection: 'column' }}>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Icon name="storefront" size={20} color="#d55314" />
+          <Text style={styles.text}> Restaurant: 
+            <Text style={{color:'black'}}> {entry.restaurantName} </Text>
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Icon name="event" size={20} color="#d55314" />
+          <Text style={styles.text}> Visit Date: 
+            <Text style={{color:'black'}}> {entry.visitDate} </Text>
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Icon name="fastfood" size={20} color="#d55314" />
+          <Text style={styles.text}> Food/Drink Item: 
+            <Text style={{color:'black'}}> {entry.foodName} </Text>
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Icon name="thumbs-up-down" size={20} color="#d55314" />
+          <Text style={styles.text}> Masarap Ba: 
+            <Text style={{color:'black'}}> {entry.isDelicious ? 'Yes' : 'No'} </Text>
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Icon name="description" size={16} color="#d55314" />
+          <Text style={styles.text}> Remarks: 
+            <Text style={{color:'black'}}> {entry.remarks ? entry.remarks : "None"} </Text>
+          </Text>
+        </View>
+
+      </View>
+      
       <View style={styles.buttonContainer}>
 
         <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create', { entry: entry, editMode: true })}>
@@ -167,6 +201,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     lineHeight: 32,
+    color: "#d55314",
   },
   title: {
     fontSize: 22,
@@ -198,8 +233,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonStyle: {
-    width: 80,
-    height: 80,
+    width: 75,
+    height: 55,
     backgroundColor: '#d55314',  
     paddingVertical: 12,         
     paddingHorizontal: 20,       
@@ -220,7 +255,7 @@ const styles = StyleSheet.create({
 
 buttonText: {
     color: '#FFFFFF',            
-    fontSize: 13,   
+    fontSize: 10,   
     paddingTop: 5,             
     //fontWeight: 'bold',      
     textAlign: 'center',    
