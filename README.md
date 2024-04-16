@@ -46,7 +46,7 @@ Some of the controls used are:
 SQLite was used to store data from the user.
 
 ### Your app must demonstrate the use of an outside resource (i.e. from the internet)
-The meh and happy faces used to indicate if masarap ba were fetched from citweb. 
+The happy and disappointed faces used to indicate if masarap ba are fetching from Wikimedia Commons. 
 
 ### Your app must be deployable on an Android Platform
 Yes.
