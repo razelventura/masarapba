@@ -4,19 +4,20 @@
 //Profile.js
 //brief: This is Read/View of the selected entry. It will display neatly the information entered by the user. 
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { ActivityIndicator, Alert, Button, Image, StyleSheet, Text, Vibration, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
+import { useFocusEffect } from '@react-navigation/native';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
 
 function ViewProfileScreen({ route, navigation }) {
 
   // Extract entry data from navigation parameters
-  const [entry, setEntry] = useState();
+  const [entry, setEntry] = useState(null);
   const { entryId } = route.params;
 
-  useEffect(() => {
+  const fetchEntry = () => {
     db.transaction(tx => {
       tx.executeSql(
         "SELECT * FROM entries WHERE id = ?;",
@@ -29,13 +30,18 @@ function ViewProfileScreen({ route, navigation }) {
         }
       );
     });
-  }, [entryId]);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchEntry();
+    }, [entryId])
+  );
 
   if (!entry) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator />
-        {/* Alternatively, show text like "Loading..." */}
       </View>
     );
   }
@@ -106,6 +112,7 @@ function ViewProfileScreen({ route, navigation }) {
       <Text style={styles.text}>Name of food/drink: {entry.foodName}</Text>
       <Text style={styles.text}>Masarap Ba: {entry.isDelicious ? 'Yes' : 'No'}</Text>
       <Text style={styles.text}>Remarks: {entry.remarks}</Text>
+      <Button title="Edit" onPress={() => navigation.navigate('Create', { entry: entry, editMode: true })} />
       <Button title="Delete" onPress={() => areYouSure(entry.id)}/>
       <Button title="Back to All Entries" onPress={() => navigation.navigate('ViewEntries')}/>
     </View>
