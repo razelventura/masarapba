@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "masarapba",
+    "name": "Masarap Ba",
     "slug": "masarapba",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,16 +15,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.razel.masarapba"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/masarapbaicon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.razel.masarapba",
+      "versionCode": 1000
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4e9d6484-1f07-482e-84b2-0eb361d6d12a"
+      }
     }
   }
 }
