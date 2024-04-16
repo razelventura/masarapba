@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { BackHandler, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 const db = SQLite.openDatabase('masarapbaV2.db');
 
@@ -86,11 +87,22 @@ function ViewSummaryScreen() {
 
   return (
     <View style={styles.container}>
+      
       <FlatList
       data={entries}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
+      ListEmptyComponent={() => (
+        <Text style={styles.emptyMessage}>No entries found. {"\n"} Add a new entry with the + button below. </Text>
+      )}
     />
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate('Create')}
+      >
+        <AntDesign name="pluscircle" size={60} color="#d55314" />
+      </TouchableOpacity>
+
     </View>
   );
 }
@@ -100,7 +112,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#d8a88b'
+    backgroundColor: '#d8a88b',
+    position: 'relative', 
   },
   itemContainer: {
     flexDirection: 'row',
@@ -113,7 +126,18 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginRight: 20 
-  }
+  },
+  addButton: {
+    position: 'absolute', // Position the button absolutely
+    right: 30, // Distance from the right edge
+    bottom: 30, // Distance from the bottom edge
+  },
+  emptyMessage: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 18,
+    color: 'black'
+  },
 });
 
 export default ViewSummaryScreen;
