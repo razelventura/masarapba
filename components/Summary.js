@@ -6,7 +6,7 @@
     //The entries will be sorted alphabetically according to restaurant name
 
 import React, { useEffect, useState } from 'react';
-import { BackHandler, View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { BackHandler, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
@@ -20,13 +20,14 @@ function ViewSummaryScreen() {
   useEffect(() => {
     const backAction = () => {
       navigation.navigate('Home');
-      return true;  // Prevent default behavior
+      return true;  // This will stop the default back action
     };
 
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
-    return () => backHandler.remove();
-  }, [navigation]);
+    if (isFocused) {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+      return () => backHandler.remove();
+    }
+  }, [isFocused, navigation]); 
 
   // Fetch entries when the screen is focused
   useEffect(() => {
@@ -35,7 +36,7 @@ function ViewSummaryScreen() {
     }
   }, [isFocused]); 
 
-  //Logging for debugging
+/*   //Logging for debugging
   useEffect(()=>{
     const logEntries = () => {
       db.transaction(tx => {
@@ -48,7 +49,7 @@ function ViewSummaryScreen() {
       });
     };  
     logEntries();
-  },[])
+  },[]) */
 
     const fetchEntries = () => {
       db.transaction(tx => {
@@ -59,7 +60,7 @@ function ViewSummaryScreen() {
             setEntries(rows._array);
           },
           (_, error) => {
-            console.error("Failed to fetch entries: ", error);
+            //console.error("Failed to fetch entries: ", error);
           }
         );
       });
@@ -79,7 +80,6 @@ function ViewSummaryScreen() {
         style={styles.face}
       />
       <Text>{item.restaurantName} - {item.visitDate} - {item.foodName} </Text>
-      {/* Display more details if needed */}
     </TouchableOpacity>
   );
 

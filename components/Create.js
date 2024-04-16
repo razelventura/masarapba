@@ -5,7 +5,7 @@
 //brief: On this page, the user should be able to create/edit an entry.
 
 import React, {useState, useEffect } from 'react';
-import { Alert, View, Image, Text, TextInput, TouchableOpacity, Vibration, Button, Platform, StyleSheet, ScrollView } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, Vibration, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
 import * as ImagePicker from 'expo-image-picker';
@@ -28,6 +28,7 @@ function CreateScreen({ route, navigation }) {
   const requestMediaLibraryPermissions = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
+      Vibration.vibrate(100);
       alert('Sorry, we need gallery permissions to make this work!');
     }
   };
@@ -35,6 +36,7 @@ function CreateScreen({ route, navigation }) {
   const requestCameraPermissions = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
+      Vibration.vibrate(100);
       alert('Sorry, we need camera permissions to make this work!');
     }
   };
@@ -51,8 +53,8 @@ function CreateScreen({ route, navigation }) {
 
     if (!result.cancelled) {
       const uri = result.assets[0].uri; // Accessing the uri from the assets array
-      console.log('Camera Result: ', result); // For debugging
-      console.log('Camera uri: ', uri); // For debugging
+      // console.log('Camera Result: ', result); // For debugging
+      // console.log('Camera uri: ', uri); // For debugging
       setPictureUri(uri);
     }
   };
@@ -69,8 +71,8 @@ function CreateScreen({ route, navigation }) {
 
     if (!result.cancelled) {
       const uri = result.assets[0].uri; // Accessing the uri from the assets array
-      console.log('Image Picker Result: ', result); // For debugging
-      console.log('Image picker uri: ', uri); // For debugging
+      // console.log('Image Picker Result: ', result); // For debugging
+      // console.log('Image picker uri: ', uri); // For debugging
       setPictureUri(uri);
     }
   };
@@ -90,8 +92,9 @@ function CreateScreen({ route, navigation }) {
 
 // Validate entries
   const validateEntry = () => {
-    if (!restaurantName || !visitDate || !foodName || isDelicious === null) {
-      Alert.alert("Error", "Please fill all required fields: Restaurant Name, Visit Date, Food Name, and Masarap Ba.");
+    if (!restaurantName || !visitDate || !foodName || pictureUri === null) {
+      Vibration.vibrate(100);
+      Alert.alert("Error", "Please fill all required fields: Restaurant Name, Visit Date, Food Name, and Picture.");
       return false;
     }
     return true;
@@ -118,8 +121,10 @@ function CreateScreen({ route, navigation }) {
         Alert.alert("Success", "Entry has been " + (editMode ? "updated" : "added") + " successfully!");
         navigation.navigate('ViewProfile', {entryId: lastId});
       }, (_, error) => {
-        console.log("DB operation error", error);
+        //console.log("DB operation error", error);
+        Vibration.vibrate(100);
         Alert.alert("Error", "Failed to " + (editMode ? "update" : "add") + " the entry.");
+        Vibration.vibrate(100);
       });
     });
   };
@@ -189,7 +194,7 @@ function CreateScreen({ route, navigation }) {
           </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={[styles.buttonStyle, {margin: 10, backgroundColor: '#d55314'}]} onPress={saveEntryToDB}>
+      <TouchableOpacity style={[styles.buttonStyle, {marginBottom: 40, backgroundColor: '#d55314'}]} onPress={saveEntryToDB}>
           <Text style={[styles.buttonText,{color: '#ffffff', fontSize: 16}]}>Save Entry</Text>
         </TouchableOpacity>
 
@@ -212,10 +217,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     //flex: 1,
-    flexDirection: 'row', // Layout children in a row
-    flexWrap: 'wrap', // Allow items to wrap to the next line
-    alignItems: 'center', // Center items vertically in the container
-    //justifyContent: 'right', // Center items horizontally in the container
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    alignItems: 'center', 
+    //justifyContent: 'right', 
     padding: 10,
   },
   buttonStyle: {

@@ -3,13 +3,12 @@
 //date: 2024-04-19
 //App.js
 //brief: This is the main page that the users will see after the splash screen. 
-    //They can choose here to view the instructions, add an entry, or view existing entries
+    //They can choose here to view the "about page", add an entry, or view existing entries
 
 import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-/* import instructionsText from './components/Instructions'; */
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateScreen from './components/Create';
@@ -19,7 +18,6 @@ import InstructionsScreen from './components/Instructions';
 import * as SQLite from 'expo-sqlite';
 
 const Stack = createNativeStackNavigator();
-
 
 // Prevent the splash screen from hiding immediately
 SplashScreen.preventAutoHideAsync();
@@ -37,7 +35,7 @@ function initDB() {
       "CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY AUTOINCREMENT, pictureUri TEXT, restaurantName TEXT, visitDate DATE, foodName TEXT, isDelicious INTEGER, remarks TEXT);"
     );
   }, (error) => {
-    console.error("Error creating tables", error);
+    //console.error("Error creating tables", error);
   });
 }
 
@@ -65,7 +63,6 @@ export default function App() {
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
-          //headerTitle:'Nav Example',
           headerStyle: { backgroundColor: '#d55314'},
           headerTintColor: 'white',
           headerShown: true,
@@ -87,6 +84,12 @@ export default function App() {
           component={ViewSummaryScreen}
           options={({ navigation }) => ({
             title: 'View All Entries',
+            headerBackVisible: false,
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ paddingHorizontal: 10 }}>
+              <Text style={{ color: 'white', fontSize: 18, textDecorationLine: 'underline' }}>Home</Text>
+            </TouchableOpacity>
+            ),
           })}
         />
         <Stack.Screen
@@ -107,6 +110,7 @@ export default function App() {
 
     </NavigationContainer>
   );
+
 function HomeScreen ({ navigation }) {
   return (
     <View style={styles.container}>
@@ -126,20 +130,16 @@ function HomeScreen ({ navigation }) {
           <Text style={styles.buttonText}>View Entries</Text>
         </TouchableOpacity>
       </View>
-
-
-
       <StatusBar style="auto" />
     </View>
   );
 }
-
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d8a88b', //#2f2922 #c2b6a8
+    backgroundColor: '#d8a88b', 
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -2,11 +2,11 @@
 //author: Razel Ventura, s0541328
 //date: 2024-04-19
 //Instructions.js
-//brief: This contains the instructions for the user.
+//brief: This contains the information about the app.
 
 // Instructions.js
 import React from 'react';
-import { View, Text, Button, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 
 const instructionsText = `
 
@@ -26,7 +26,6 @@ function InstructionsScreen({ navigation }) {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Welcome to Masarap Ba!</Text>
       <Text style={styles.content}>{instructionsText}</Text>
-      {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
     </ScrollView>
   );
 }
@@ -37,6 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor:'#d8a88b',
   },
   title: {
     fontSize: 22,
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 16,
     marginBottom: 20,
+    textAlign: 'center',
   },
 });
 
