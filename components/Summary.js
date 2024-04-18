@@ -92,17 +92,19 @@ function ViewSummaryScreen() {
         }}
         style={styles.face}
       />
+
       {/* One Line: <Text style={styles.textWrap}>{item.restaurantName} - {item.visitDate} - {item.foodName} </Text> */}
       {/* Three Lines: <Text style={styles.textWrap}>{item.restaurantName}{"\n"}{item.foodName}{"\n"}{item.visitDate}</Text> */}
+
       <View style={{ flexDirection: 'column' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Icon name="storefront" size={15} color="#d55314" />
-          <Text style={styles.textWrap}> {item.restaurantName}</Text>
+          <Text style={styles.textWrap}>{item.restaurantName.length > 30 ? item.restaurantName.slice(0, 30) + '...' : item.restaurantName}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Icon name="fastfood" size={15} color="#d55314" />
-          <Text style={styles.textWrap}> {item.foodName}</Text>
+          <Text style={styles.textWrap}>{item.foodName.length > 30 ? item.foodName.slice(0, 30) + '...' : item.foodName}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#d8a88b',
     position: 'relative', 
+    paddingBottom: 50,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
   textWrap: {
     fontSize: 14,
     lineHeight: 24, 
-    flexShrink: 1, 
+    //flexShrink: 1, 
     color: 'black',
   },
 });
