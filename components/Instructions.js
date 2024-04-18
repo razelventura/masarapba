@@ -6,7 +6,7 @@
 
 // Instructions.js
 import React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const instructionsText = `
 
@@ -19,13 +19,22 @@ This app is for you! You can log the food that you ordered and decide if it's ma
 Then next time you visit that restaurant, you'd know what to order again and what to avoid!
 
 May your food always be MASARAP! Enjoy!
+
 `;
+
+const creator = `About the Creator`
 
 function InstructionsScreen({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Welcome to Masarap Ba!</Text>
       <Text style={styles.content}>{instructionsText}</Text>
+      
+      <TouchableOpacity
+        onPress = {() => Linking.openURL('https://www.razelventura.com')}>
+        <Text style={styles.hyperlink}>{creator}</Text>
+      </TouchableOpacity>
+      
     </ScrollView>
   );
 }
@@ -41,13 +50,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
+    color: '#d55314'
   },
   content: {
     fontSize: 16,
     marginBottom: 20,
     textAlign: 'center',
   },
+  hyperlink: {
+    fontSize: 16,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
+    color: '#d55314'
+  }
 });
 
 export default InstructionsScreen;

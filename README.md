@@ -34,7 +34,7 @@ Some of the controls used are:
 -Alert  
 -Button  
 -Image  
--Scrollable View  
+-Scroll View  
 -Text  
 -Text Input  
 -TouchableOpacity  
@@ -52,4 +52,4 @@ The happy and disappointed faces used to indicate if masarap ba are fetching fro
 Yes.
 
 ## NOTE TO STEPHEN
-This was tested on both Android and iOS (but mostly iOS). 
+This was tested on both Android and iOS. 

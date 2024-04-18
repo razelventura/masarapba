@@ -135,7 +135,7 @@ function ViewSummaryScreen() {
     />
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate('Create')}
+        onPress={() => navigation.navigate('Create',{})}
       >
         <AntDesign name="pluscircle" size={60} color="#d55314" />
       </TouchableOpacity>

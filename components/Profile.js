@@ -5,7 +5,7 @@
 //brief: This is Read/View of the selected entry. It will display neatly the information entered by the user. 
 
 import React, {useState, useEffect, useCallback} from 'react';
-import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, Vibration, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, Vibration, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -17,6 +17,7 @@ function ViewProfileScreen({ route, navigation }) {
   // Extract entry data from navigation parameters
   const [entry, setEntry] = useState(null);
   const { entryId } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
 
   const fetchEntry = () => {
     db.transaction(tx => {
@@ -100,6 +101,7 @@ function ViewProfileScreen({ route, navigation }) {
   }  
 
   return (
+
     <View style={styles.container}>
       <Image
         source={{
@@ -109,46 +111,70 @@ function ViewProfileScreen({ route, navigation }) {
         }}
         style={styles.face}
       />
-      {entry.pictureUri && <Image source={{ uri: entry.pictureUri }} style={styles.image} />}
 
-      <View style={{ flexDirection: 'column' }}>
+      <ScrollView style={{ flex: 1,flexDirection: 'column',padding: 20, paddingBottom: 50 }}> 
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name="storefront" size={20} color="#d55314" />
-          <Text style={styles.text}> Restaurant: 
-            <Text style={{color:'black'}}> {entry.restaurantName} </Text>
-          </Text>
-        </View>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}>
+        {entry.pictureUri && <Image source={{ uri: entry.pictureUri }} style={styles.image} />}
+      </TouchableOpacity>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name="event" size={20} color="#d55314" />
-          <Text style={styles.text}> Visit Date: 
-            <Text style={{color:'black'}}> {entry.visitDate} </Text>
-          </Text>
-        </View>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name="fastfood" size={20} color="#d55314" />
-          <Text style={styles.text}> Food/Drink Item: 
-            <Text style={{color:'black'}}> {entry.foodName} </Text>
-          </Text>
-        </View>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name="thumbs-up-down" size={20} color="#d55314" />
-          <Text style={styles.text}> Masarap Ba: 
-            <Text style={{color:'black'}}> {entry.isDelicious ? 'Yes' : 'No'} </Text>
-          </Text>
-        </View>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name="description" size={16} color="#d55314" />
-          <Text style={styles.text}> Remarks: 
-            <Text style={{color:'black'}}> {entry.remarks ? entry.remarks : "None"} </Text>
-          </Text>
-        </View>
-
+      <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Image source={{ uri: entry.pictureUri }} style={styles.modalImage} />
+              <TouchableOpacity
+                style={styles.hideModalButton}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={{color: 'white'}}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+      </Modal>
+      
+       <View style={{flexDirection: 'row', alignItems: 'center',flexWrap: 'wrap'}}>
+          <Icon name="storefront" size={20} color="#d55314"/>
+          <Text style={styles.textWrap}> Restaurant:</Text>
+          <Text style={[styles.textWrap,{color:'black'}]}> {entry.restaurantName} </Text>
       </View>
+
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Icon name="event" size={20} color="#d55314" />
+          <Text style={styles.textWrap}> Visit Date: </Text>
+          <Text style={[styles.textWrap,{color:'black'}]}> {entry.visitDate} </Text>
+      </View>
+          
+      <View style={{flexDirection: 'row', alignItems: 'center',flexWrap: 'wrap'}}>
+          <Icon name="fastfood" size={20} color="#d55314" />
+          <Text style={styles.textWrap}> Food/Drink Item: </Text>
+          <Text style={[styles.textWrap,{color:'black'}]}>{entry.foodName} </Text>
+      </View>
+          
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Icon name="thumbs-up-down" size={20} color="#d55314" />
+          <Text style={styles.textWrap}> Masarap Ba: </Text>
+          <Text style={[styles.textWrap,{color:'black'}]}> {entry.isDelicious ? 'Yes' : 'No'} </Text>
+      </View>
+          
+
+      <View style={{flexDirection: 'row', alignItems: 'center',flexWrap: 'wrap', paddingBottom: 50}}>
+          <Icon name="description" size={20} color="#d55314" />
+          <Text style={styles.text}> Remarks: </Text>  
+          <Text style={[styles.textWrap,{color:'black'}]}>{entry.remarks ? entry.remarks : "None"}  </Text>
+      </View>     
+
+      </ScrollView>
       
       <View style={styles.buttonContainer}>
 
@@ -162,25 +188,16 @@ function ViewProfileScreen({ route, navigation }) {
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create')}>
+{/*         Removing this because it keeps on going back to edit mode.
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create',{})}>
           <Icon name="add" size={24} color="#FFFFFF" />
           <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('ViewEntries')}>
           <Icon name="list" size={24} color="#FFFFFF" />
-          <Text style={styles.buttonText}>List</Text>
+          <Text style={styles.buttonText}>View All</Text>
         </TouchableOpacity>
-
-{/*         <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Create', { entry: entry, editMode: true })}>
-          <Text style={styles.buttonText}>Edit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonStyle} onPress={() => areYouSure(entry.id)}>
-          <Text style={styles.buttonText}>Delete</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('ViewEntries')}>
-          <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity> */}
 
       </View>
 
@@ -208,10 +225,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 300,
-    height: 225,
+    width: 280,
+    height: 180,
     resizeMode: 'cover',
-    marginBottom: 20,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
   },
   centered: {
     flex: 1,
@@ -233,7 +253,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonStyle: {
-    width: 75,
+    width: 79,
     height: 55,
     backgroundColor: '#d55314',  
     paddingVertical: 12,         
@@ -260,6 +280,54 @@ buttonText: {
     //fontWeight: 'bold',      
     textAlign: 'center',    
 },
+output: {
+  flexDirection: 'row', 
+  alignItems: 'center', 
+  //padding: 20, 
+  //marginLeft: 10,
+  //marginRight: 10,
+  //flexShrink: 1
+},
+textWrap: {
+  fontSize: 16,
+  lineHeight: 24, 
+  flexShrink: 1, 
+  color: '#d55314',
+},
+centeredView: {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: 22
+},
+modalView: {
+  margin: 20,
+  backgroundColor: "#d55314",
+  borderRadius: 20,
+  padding: 35,
+  alignItems: "center",
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5
+},
+modalImage: {
+  width: 400, 
+  height: 300, 
+},  
+hideModalButton: {
+  marginTop: 15,
+  backgroundColor: '#d8a88b', 
+  borderRadius: 10,
+  padding: 10,
+  elevation: 2, 
+},
+
 });
+
 
 export default ViewProfileScreen;
