@@ -94,7 +94,7 @@ function CreateScreen({ route, navigation }) {
 
 // Validate entries
   const validateEntry = () => {
-    if (!restaurantName || !visitDate || !foodName || pictureUri === null) {
+    if (!restaurantName || !visitDate || !pictureUri || !foodName === null) {
       Vibration.vibrate(100);
       Alert.alert("Error", "Please fill all required fields: Restaurant Name, Visit Date, Food Name, and Picture.");
       return false;
