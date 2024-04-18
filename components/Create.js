@@ -10,6 +10,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 
 const db = SQLite.openDatabase('masarapbaV2.db');
@@ -23,7 +24,7 @@ function CreateScreen({ route, navigation }) {
   const [pictureUri, setPictureUri] = useState(entry ? entry.pictureUri : '');
 
   const [date, setDate] = useState(entry ? new Date(entry.visitDate) : new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  //const [showDatePicker, setShowDatePicker] = useState(false);
   const [visitDate, setVisitDate] = useState(entry ? entry.visitDate : new Date().toISOString().split('T')[0]);
 
   //Request for permissions for media and camera
@@ -79,7 +80,7 @@ function CreateScreen({ route, navigation }) {
     }
   };
 
-  // Handler for date change
+/*   // Handler for date change (for iOS)
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     if (currentDate) {
@@ -90,6 +91,32 @@ function CreateScreen({ route, navigation }) {
   }
     setDate(currentDate);
     setShowDatePicker(false); // Close date picker after selection
+  };
+ */
+
+  // Handler for date change (for Android)
+  const onChangeDate = (event, selectedDate) => {
+    if (selectedDate) {
+      setDate(selectedDate);
+  
+      // Create a new Date object with the local timezone offset applied
+      const localDate = new Date(
+        selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000)
+      );
+  
+      setVisitDate(localDate.toISOString().split('T')[0]); 
+    }
+  };
+  
+
+  // Show the date picker (for Android)
+  const showDatePicker = () => {
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange: onChangeDate,
+      mode: 'date',
+      is24Hour: true, // Use 24-hour format
+    });
   };
 
 // Validate entries
@@ -163,20 +190,12 @@ function CreateScreen({ route, navigation }) {
       />
       <Text> Date Selected: {visitDate ? visitDate : "None"} </Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-      <TouchableOpacity style={styles.buttonStyle} onPress={() => setShowDatePicker(true)}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={showDatePicker}>
           <Icon name="calendar-month" size={24} color="#FFFFFF" />
-          <Text style={styles.buttonTextSmall}>{(visitDate ? "Change" : "Add") + " Date"}</Text>
-          {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="default"
-            onChange={onChangeDate}
-            style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}
-          />
-        )}
+          <Text style={styles.buttonTextSmall}>{visitDate ? "Change Date" : "Add Date"}</Text>
         </TouchableOpacity>
-        </View>
+      </View>
+
       <Text> Picture Selected: { pictureUri ? "" : "None"} </Text>
       {pictureUri && (
         <Image source=
