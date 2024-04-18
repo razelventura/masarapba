@@ -52,4 +52,4 @@ The happy and disappointed faces used to indicate if masarap ba are fetching fro
 Yes.
 
 ## NOTE TO STEPHEN
-This was tested on both Android and iOS. 
+This was tested on both Android and iOS. The date picker will not work for iOS. The one implemented here is specifically for Android.
