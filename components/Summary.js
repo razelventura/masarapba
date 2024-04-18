@@ -95,12 +95,12 @@ function ViewSummaryScreen() {
       {/* One Line: <Text style={styles.textWrap}>{item.restaurantName} - {item.visitDate} - {item.foodName} </Text> */}
       {/* Three Lines: <Text style={styles.textWrap}>{item.restaurantName}{"\n"}{item.foodName}{"\n"}{item.visitDate}</Text> */}
       <View style={{ flexDirection: 'column' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
           <Icon name="storefront" size={15} color="#d55314" />
           <Text style={styles.textWrap}> {item.restaurantName}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
           <Icon name="fastfood" size={15} color="#d55314" />
           <Text style={styles.textWrap}> {item.foodName}</Text>
           </View>
@@ -188,8 +188,8 @@ const styles = StyleSheet.create({
   },
   textWrap: {
     fontSize: 14,
-    lineHeight: 24, // Increase line height for better readability on wrap
-    flexShrink: 1, // Allows text to wrap in the flex container
+    lineHeight: 24, 
+    flexShrink: 1, 
     color: 'black',
   },
 });
