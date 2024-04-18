@@ -120,11 +120,11 @@ function ViewProfileScreen({ route, navigation }) {
       </TouchableOpacity>
 
       <Modal
-          animationType="slide"
-          transparent={true}
+          animationType="fade"
+          transparent={false}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
+            //Alert.alert("Modal has been closed.");
             setModalVisible(!modalVisible);
           }}
         >
@@ -302,9 +302,9 @@ centeredView: {
 },
 modalView: {
   margin: 20,
-  backgroundColor: "#d55314",
+  //backgroundColor: "#d55314",
   borderRadius: 20,
-  padding: 35,
+  padding: 30,
   alignItems: "center",
   shadowColor: "#000",
   shadowOffset: {
@@ -316,12 +316,12 @@ modalView: {
   elevation: 5
 },
 modalImage: {
-  width: 400, 
-  height: 300, 
+  width: 400 * 0.80, 
+  height: 300 * 0.80, 
 },  
 hideModalButton: {
   marginTop: 15,
-  backgroundColor: '#d8a88b', 
+  backgroundColor: '#d55314', 
   borderRadius: 10,
   padding: 10,
   elevation: 2, 
