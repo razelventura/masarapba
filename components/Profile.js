@@ -318,6 +318,7 @@ modalView: {
 modalImage: {
   width: 400 * 0.80, 
   height: 300 * 0.80, 
+  borderRadius: 20,
 },  
 hideModalButton: {
   marginTop: 15,
